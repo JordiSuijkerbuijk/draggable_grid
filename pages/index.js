@@ -7,26 +7,56 @@ const Home = () => {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const Draggable = require('@shopify/draggable');
-      new Draggable.Sortable(document.querySelectorAll('.draggableContainer'), {
+    //   new Draggable.Sortable(document.querySelectorAll('.draggableContainer'), {
+    //     draggable: '.draggable',
+    //     sortAnimation: {
+    //       duration: 200,
+    //       easingFunction: 'ease-in-out',
+    //     }, // Or [SortAnimation]
+    //   })
+
+      console.log(Draggable)
+    // }
+
+
+
+      const containers = document.querySelectorAll('.draggableContainer');
+
+      if (containers.length === 0) {
+        return false;
+      }
+    
+      new Draggable.Sortable(containers, {
         draggable: '.draggable',
-        sortAnimation: {
+        plugins: [Draggable.Plugins.SortAnimation],
+        swapAnimation: {
           duration: 200,
           easingFunction: 'ease-in-out',
-        }, // Or [SortAnimation]
+        },
       })
-        .on('swappable:start', () => console.log('sortable:start'))
-        .on('swappable:swapped', () => console.log('sortable:sort'))
-        .on('swappable:stop', () => console.log('sortable:stop'));
+
+      const cards = document.querySelectorAll('.control');
+
+      [...cards] && [...cards].length > 0 && [...cards].map((item, key) => {
+        item.addEventListener("click", function() {
+          console.log('test');
+        });
+      })
+
+      console.log('cards', cards);
     }
   }, []);
 
   function changeWidth(e, value) {
+    console.log('test')
     if (value === 'small') {
       e.target.parentNode.style.width = 'calc(33% - 20px)';
       return;
     }
     if (value === 'medium') {
+      console.log('test')
       e.target.parentNode.style.width = 'calc(50% - 20px)';
+      console.log(e.target.parentNode.classList)
       return;
     }
     if (value === 'large') {
@@ -38,32 +68,32 @@ const Home = () => {
   return (
     <main>
       <h1>Hello from Preact</h1>
-      <div class={clsx([style.container, 'draggableContainer'])}>
-        <div class={clsx([style.card, style.red, 'draggable'])} draggable>
+      <div className={clsx([style.container, 'draggableContainer'])}>
+        <div className={clsx([style.card, style.red, 'draggable'])} draggable>
+          <div onClick={(e) => changeWidth(e, 'small')} className="control" id="small"> small </div>
+          <div onClick={(e) => changeWidth(e, 'medium')} className="control" id="medium"> medium </div>
+          <div onClick={(e) => changeWidth(e, 'large')} className="control" id="large"> large </div>
+        </div>
+        <div className={clsx([style.card, style.blue, 'draggable'])} draggable>
           <div onClick={(e) => changeWidth(e, 'small')}> small </div>
           <div onClick={(e) => changeWidth(e, 'medium')}> medium </div>
           <div onClick={(e) => changeWidth(e, 'large')}> large </div>
         </div>
-        <div class={clsx([style.card, style.blue, 'draggable'])} draggable>
-          <div onClick={(e) => changeWidth(e, 'small')}> small </div>
-          <div onClick={(e) => changeWidth(e, 'medium')}> medium </div>
-          <div onClick={(e) => changeWidth(e, 'large')}> large </div>
-        </div>
-        <div class={clsx([style.card, style.green, 'draggable'])} draggable>
+        <div className={clsx([style.card, style.green, 'draggable'])} draggable>
           <div onClick={(e) => changeWidth(e, 'small')}> small </div>
           <div onClick={(e) => changeWidth(e, 'medium')}> medium </div>
           <div onClick={(e) => changeWidth(e, 'large')}> large </div>
         </div>
         <div
-          class={clsx([style.card, style.yellow, 'draggable'])}
+          className={clsx([style.card, style.yellow, 'draggable'])}
           draggable
         ></div>
         <div
-          class={clsx([style.card, style.pink, 'draggable'])}
+          className={clsx([style.card, style.pink, 'draggable'])}
           draggable
         ></div>
         <div
-          class={clsx([style.card, style.black, 'draggable'])}
+          className={clsx([style.card, style.black, 'draggable'])}
           draggable
         ></div>
       </div>
